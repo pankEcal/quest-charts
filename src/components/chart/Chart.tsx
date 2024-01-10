@@ -1,7 +1,8 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const highchartsData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const highchartsData_1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const highchartsData_2_ = [10, 5, 2, 6, 7, 8, 9, 3, 4, 5, 10];
 
 const chartOptions: Highcharts.Options = {
   title: {
@@ -23,8 +24,13 @@ const chartOptions: Highcharts.Options = {
   series: [
     {
       type: "area",
-      data: highchartsData,
+      data: highchartsData_1,
       color: "#002233",
+    },
+    {
+      type: "area",
+      data: highchartsData_2_,
+      color: "#552233",
     },
   ],
   credits: {
