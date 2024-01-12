@@ -3,14 +3,23 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useEffect, useState } from "react";
 
-// const highchartsData_1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-// const highchartsData_2_ = [10, 5, 2, 6, 7, 8, 9, 3, 4, 5, 10];
+const highchartsData_1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const highchartsData_2_ = [10, 5, 2, 6, 7, 8, 9, 3, 4, 5, 10];
 
-const BACKEND_URL = "http://localhost:3333/quest/get";
+const BACKEND_URL = "http://localhost:3333/quest/get/csv";
+
+interface ChartData {
+  entry_1: any[];
+  entry_3: any[];
+  entry_2: any[];
+  entry_4: any[];
+}
 
 const Chart = () => {
-  const [graphTimeData, setGraphTimeData] = useState([]);
-  const [graphRpmData, setGraphRpmData] = useState([]);
+  const [graphData_1, setGraphData_1]: any = useState(highchartsData_1);
+  const [graphData_2, setGraphData_2]: any = useState(highchartsData_2_);
+  const [graphData_3, setGraphData_3]: any = useState([]);
+  const [graphData_4, setGraphData_4]: any = useState([]);
 
   const chartOptions: Highcharts.Options = {
     title: {
@@ -32,14 +41,24 @@ const Chart = () => {
     series: [
       {
         type: "area",
-        data: graphRpmData,
-        color: "#aa2233",
+        data: graphData_2,
+        color: "#3B3486",
       },
       {
         type: "area",
-        data: graphTimeData,
-        color: "#aa22aa",
+        data: graphData_3,
+        color: "#FB8B24",
       },
+      {
+        type: "area",
+        data: graphData_4,
+        color: "#5D3587",
+      },
+      // {
+      //   type: "area",
+      //   data: graphData_1,
+      //   color: "#424769",
+      // },
     ],
     credits: {
       enabled: false,
@@ -54,20 +73,36 @@ const Chart = () => {
   useEffect(() => {
     axios.get(BACKEND_URL).then((response: any) => {
       const apiData: any = response?.data?.data;
-      let timeData_d: any = [];
-      let rpmData_d: any = [];
+      const graphData: ChartData = {
+        entry_1: [],
+        entry_3: [],
+        entry_2: [],
+        entry_4: [],
+      };
 
       apiData.map((currentData: any) => {
-        const { engineLoad, rpm } = currentData;
-        timeData_d.push(engineLoad);
-        rpmData_d.push(Number(rpm));
+        const { time, obdRpm, obdManifoldPressure, obdThrottle } = currentData;
+        const { entry_1, entry_2, entry_3, entry_4 } = graphData;
+
+        entry_1.push(Number(time));
+        entry_2.push(Number(obdRpm));
+        entry_3.push(Number(obdManifoldPressure));
+        entry_4.push(Number(obdThrottle));
+
+        // console.log(
+        //   `time: ${time}, opdRpm: ${obdRpm}, obdManifoldPressure: ${obdManifoldPressure}, obdThrottle: ${obdThrottle}`
+        // );
       });
 
-      setGraphTimeData(timeData_d);
-      setGraphRpmData(rpmData_d);
+      setGraphData_1(graphData.entry_1);
+      setGraphData_2(graphData.entry_2);
+      setGraphData_3(graphData.entry_3);
+      setGraphData_4(graphData.entry_4);
 
-      timeData_d = [];
-      rpmData_d = [];
+      // console.log("graphData_1: ", graphData_1);
+      // console.log("graphData_2: ", graphData_2);
+      // console.log("graphData_3: ", graphData_3);
+      // console.log("graphData_4: ", graphData_4);
     });
   }, []);
 
