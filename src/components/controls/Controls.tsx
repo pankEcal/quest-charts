@@ -10,7 +10,7 @@ const Controls = () => {
   const FILE_CLEAR_URL = "http://localhost:3333/quest/clear/csv";
 
   // bypassing build error xDD
-  console.log(isFileUploaded);
+  console.log("bypassing build error: ", isFileUploaded);
 
   const uploadFile = (fileData: any) => {
     if (fileData) {
@@ -93,7 +93,7 @@ const Controls = () => {
   return (
     <form
       onSubmit={handleFormSubmit}
-      className="border-gray-400 border-2 p-2  my-4 rounded-md flex items-center justify-start gap-10"
+      className="border-gray-400 border-2 p-2  my-4 rounded-md flex items-center justify-start gap-14"
     >
       <div>
         <button
@@ -104,8 +104,20 @@ const Controls = () => {
         </button>
       </div>
 
-      <div className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
-        <button>
+      <div className="flex items-center justify-center gap-1">
+        <div>
+          <button
+            className="bg-green-600 hover:bg-green-700 text-gray-100 font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded cursor-pointer"
+            id="uploadDataButton"
+            disabled={isFileUploadDisabled}
+            onClick={() => {}}
+            type="submit"
+          >
+            Upload Data {isFileUploadDisabled ? "(Disabled)" : "(Enabled)"}
+          </button>
+        </div>
+
+        <div className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l">
           <input
             type="file"
             name="fileUploadInput"
@@ -114,17 +126,7 @@ const Controls = () => {
               verifyFileUpload(e);
             }}
           />
-        </button>
-      </div>
-      <div className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-        <button
-          id="uploadDataButton"
-          disabled={isFileUploadDisabled}
-          onClick={() => {}}
-          type="submit"
-        >
-          Upload Data {isFileUploadDisabled ? "(Disabled)" : "(Enabled)"}
-        </button>
+        </div>
       </div>
     </form>
   );
