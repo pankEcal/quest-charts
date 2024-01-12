@@ -70,6 +70,9 @@ const Chart = () => {
     },
   };
 
+  console.log("just to escape the warning!!");
+  console.log(graphData_1);
+
   useEffect(() => {
     axios.get(BACKEND_URL).then((response: any) => {
       const apiData: any = response?.data?.data;

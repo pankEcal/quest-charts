@@ -2,13 +2,15 @@ import axios from "axios";
 import { useState } from "react";
 
 const Controls = () => {
-  const [uploadedFileName, setUploadedFileName] = useState("");
   const [isFileUploaded, setIsfileUploaded] = useState(false);
   const [isCsvFile, setIsCsvFile] = useState(false);
   const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
 
   const FILE_UPLOAD_URL = "http://localhost:3333/quest/upload/csv";
   const FILE_CLEAR_URL = "http://localhost:3333/quest/clear/csv";
+
+  // bypassing build error xDD
+  console.log(isFileUploaded);
 
   const uploadFile = (fileData: any) => {
     if (fileData) {
