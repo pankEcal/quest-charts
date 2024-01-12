@@ -8,6 +8,7 @@ const Controls = () => {
   const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
 
   const FILE_UPLOAD_URL = "http://localhost:3333/quest/upload/csv";
+  const FILE_CLEAR_URL = "http://localhost:3333/quest/clear/csv";
 
   const uploadFile = (fileData: any) => {
     if (fileData) {
@@ -78,13 +79,25 @@ const Controls = () => {
     }
   };
 
+  const handleClearData = async () => {
+    try {
+      const { data: fileClearedData } = await axios.get(FILE_CLEAR_URL);
+      console.log("fileClearedData: ", fileClearedData);
+    } catch (err) {
+      console.log("Error removing data ");
+    }
+  };
+
   return (
     <form
       onSubmit={handleFormSubmit}
       className="border-gray-400 border-2 p-2  my-4 rounded-md flex items-center justify-start gap-10"
     >
       <div>
-        <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+        <button
+          onClick={handleClearData}
+          className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+        >
           Clear Data
         </button>
       </div>
