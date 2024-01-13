@@ -1,16 +1,16 @@
 import axios from "axios";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { errorTost, laodingTost, successTost } from "../../utils/toast.util";
 
 const Controls = () => {
   const [isFileUploaded, setIsfileUploaded] = useState(false);
   const [isCsvFile, setIsCsvFile] = useState(false);
   const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const FILE_UPLOAD_URL = "http://localhost:3333/quest/upload/csv";
   const FILE_CLEAR_URL = "http://localhost:3333/quest/clear/csv";
-
-  // bypassing build error xDD
-  console.log("bypassing build error: ", isFileUploaded);
 
   const uploadFile = (fileData: any) => {
     if (fileData) {
@@ -60,10 +60,16 @@ const Controls = () => {
       if (fileformat === "csv") {
         setIsCsvFile(true);
         setIsFileUploadDisabled(false);
+        setUploadedFileName(fileName);
+        successTost(`valid file format .${fileformat}`);
       } else {
+        setIsCsvFile(false);
+        setIsFileUploadDisabled(true);
+        errorTost(`invalid file format .${fileformat}`);
         console.log(`invalid file format .${fileformat}`);
       }
     } else {
+      errorTost(`no file uploaded`);
       console.log(`no file uploaded`);
       setIsfileUploaded(false);
     }
@@ -72,21 +78,31 @@ const Controls = () => {
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (isCsvFile && !isFileUploadDisabled) {
+    if (isFileUploaded && isCsvFile && !isFileUploadDisabled) {
+      const uploadTost = laodingTost(`Uploading ${uploadedFileName}`);
       const uploadedFile = e.target.fileUploadInput.files[0];
       const fileUploadRes = await uploadFile(uploadedFile);
 
-      console.log("FILE UPLOAD RESPONSE: ");
-      console.log(fileUploadRes);
+      if (fileUploadRes) {
+        toast.dismiss(uploadTost);
+        successTost(`${uploadedFileName} uploaded successfully`);
+      } else {
+        toast.dismiss(uploadTost);
+        errorTost(`${uploadedFileName} upload failed`);
+      }
     }
   };
 
   const handleClearData = async () => {
+    const dataClearingTost = laodingTost("Clearing QuestDB data!");
     try {
-      const { data: fileClearedData } = await axios.get(FILE_CLEAR_URL);
-      console.log("fileClearedData: ", fileClearedData);
+      await axios.get(FILE_CLEAR_URL);
+      toast.dismiss(dataClearingTost);
+      successTost("successfully cleared QuestDB data!");
     } catch (err) {
-      console.log("Error removing data ");
+      toast.dismiss(dataClearingTost);
+      errorTost("Error clearing QuestDB data");
+      console.log("Error clearing QuestDB data");
     }
   };
 
@@ -96,6 +112,7 @@ const Controls = () => {
       className="border-gray-400 border-2 p-2  my-4 rounded-md flex items-center justify-start gap-14"
     >
       <div>
+        <Toaster />
         <button
           onClick={handleClearData}
           className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
