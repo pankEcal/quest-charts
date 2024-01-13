@@ -9,9 +9,6 @@ const Controls = () => {
   const FILE_UPLOAD_URL = "http://localhost:3333/quest/upload/csv";
   const FILE_CLEAR_URL = "http://localhost:3333/quest/clear/csv";
 
-  // bypassing build error xDD
-  console.log("bypassing build error: ", isFileUploaded);
-
   const uploadFile = (fileData: any) => {
     if (fileData) {
       const formData = new FormData();
@@ -61,6 +58,8 @@ const Controls = () => {
         setIsCsvFile(true);
         setIsFileUploadDisabled(false);
       } else {
+        setIsCsvFile(false);
+        setIsFileUploadDisabled(true);
         console.log(`invalid file format .${fileformat}`);
       }
     } else {
@@ -72,7 +71,7 @@ const Controls = () => {
   const handleFormSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (isCsvFile && !isFileUploadDisabled) {
+    if (isFileUploaded && isCsvFile && !isFileUploadDisabled) {
       const uploadedFile = e.target.fileUploadInput.files[0];
       const fileUploadRes = await uploadFile(uploadedFile);
 
@@ -86,7 +85,7 @@ const Controls = () => {
       const { data: fileClearedData } = await axios.get(FILE_CLEAR_URL);
       console.log("fileClearedData: ", fileClearedData);
     } catch (err) {
-      console.log("Error removing data ");
+      console.log("Error clearing data ");
     }
   };
 

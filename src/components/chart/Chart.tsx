@@ -19,7 +19,7 @@ const Chart = () => {
   const [graphData_1, setGraphData_1]: any = useState(highchartsData_1);
   const [graphData_2, setGraphData_2]: any = useState(highchartsData_2_);
   const [graphData_3, setGraphData_3]: any = useState([]);
-  const [graphData_4, setGraphData_4]: any = useState([]);
+  // const [graphData_4, setGraphData_4]: any = useState([]);
 
   const chartOptions: Highcharts.Options = {
     title: {
@@ -41,22 +41,22 @@ const Chart = () => {
     series: [
       {
         type: "area",
-        data: graphData_2,
+        data: graphData_1,
         color: "#3B3486",
       },
       {
         type: "area",
-        data: graphData_3,
+        data: graphData_2,
         color: "#FB8B24",
       },
       {
         type: "area",
-        data: graphData_4,
+        data: graphData_3,
         color: "#5D3587",
       },
       // {
       //   type: "area",
-      //   data: graphData_1,
+      //   data: graphData_4,
       //   color: "#424769",
       // },
     ],
@@ -70,8 +70,8 @@ const Chart = () => {
     },
   };
 
-  console.log("just to escape the warning!!");
-  console.log(graphData_1);
+  // console.log("just to escape the warning!!");
+  // console.log(graphData_1);
 
   useEffect(() => {
     axios.get(BACKEND_URL).then((response: any) => {
@@ -97,10 +97,10 @@ const Chart = () => {
         // );
       });
 
-      setGraphData_1(graphData.entry_1);
-      setGraphData_2(graphData.entry_2);
-      setGraphData_3(graphData.entry_3);
-      setGraphData_4(graphData.entry_4);
+      setGraphData_1(graphData.entry_2);
+      setGraphData_2(graphData.entry_3);
+      setGraphData_3(graphData.entry_4);
+      // setGraphData_4(graphData.entry_4);
 
       // console.log("graphData_1: ", graphData_1);
       // console.log("graphData_2: ", graphData_2);
