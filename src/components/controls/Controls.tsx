@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 const Controls = () => {
   const [isFileUploaded, setIsfileUploaded] = useState(false);
@@ -95,6 +96,7 @@ const Controls = () => {
       className="border-gray-400 border-2 p-2  my-4 rounded-md flex items-center justify-start gap-14"
     >
       <div>
+        <Toaster />
         <button
           onClick={handleClearData}
           className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
