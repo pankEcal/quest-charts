@@ -37,6 +37,7 @@ const Controls = () => {
           })
           .catch((error) => {
             // handle errors
+            errorTost(`${uploadedFileName} upload failed`);
             console.log(error);
             reject(null);
           });
